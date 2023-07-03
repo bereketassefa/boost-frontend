@@ -1,21 +1,20 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Navbar() {
-  const navigate = useNavigate();
   return (
     <div className="w-full bg-gray-200">
       <nav
         aria-label="Site Nav"
-        className="flex items-center justify-between max-w-5xl p-4 mx-auto "
+        className="mx-auto flex max-w-5xl items-center justify-between p-4 "
       >
         <a
           href="/"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-lg "
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg "
         >
           {/* <span className="sr-only">Logo</span> */}
           <svg
-            className="h-8 text-indigo-600 sm:h-10"
+            className="h-8 sm:h-10 text-indigo-600"
             viewBox="0 0 28 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -29,12 +28,9 @@ function Navbar() {
 
         <ul className="flex items-center gap-2 text-sm font-medium text-gray-500">
           <li>
-            <button
-              className="inline-flex items-center gap-2 px-8 py-3 text-white bg-indigo-600 border border-indigo-600 rounded hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-              onClick={() => {
-                localStorage.clear();
-                navigate("/");
-              }}
+            <Link
+              className="inline-flex items-center gap-2 rounded border border-indigo-600 bg-indigo-600 px-8 py-3 text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
+              to="/"
             >
               <span className="text-sm font-medium"> Logout </span>
 
@@ -52,7 +48,7 @@ function Navbar() {
                   d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
                 />
               </svg>
-            </button>
+            </Link>
           </li>
         </ul>
       </nav>

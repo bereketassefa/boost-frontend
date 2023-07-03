@@ -9,7 +9,6 @@
 export const name_validation = {
   name: "name",
   label: "name",
-  select: false,
   type: "text",
   id: "name",
   placeholder: "write your name ...",
@@ -27,7 +26,6 @@ export const name_validation = {
 export const lastname_validation = {
   name: "lastName",
   label: "Last Name",
-  select: false,
   type: "text",
   id: "lastname",
   placeholder: "last name ...",
@@ -43,10 +41,27 @@ export const lastname_validation = {
   },
 };
 
+// export const desc_validation = {
+//   name: "description",
+//   label: "description",
+//   multiline: true,
+//   id: "description",
+//   placeholder: "write description ...",
+//   validation: {
+//     required: {
+//       value: true,
+//       message: "required",
+//     },
+//     maxLength: {
+//       value: 200,
+//       message: "200 characters max",
+//     },
+//   },
+// };
+
 export const password_validation = {
   name: "password",
   label: "password",
-  select: false,
   type: "password",
   id: "password",
   placeholder: "type password ...",
@@ -62,28 +77,43 @@ export const password_validation = {
   },
 };
 export const password_confirm = {
-  name: "fieldOfStudy",
-  label: "Field of study",
-
-  type: "select",
-  id: "fieldOfStudy",
-  placeholder: "Field of study",
-  select: true,
+  name: "validatePassword",
+  label: "validate password",
+  type: "password",
+  id: "validatePassword",
+  placeholder: "type password again",
   validation: {
     required: {
       value: true,
       message: "required",
     },
+    minLength: {
+      value: 6,
+      message: "min 6 characters",
+    },
   },
 };
+
+// export const num_validation = {
+//   name: "num",
+//   label: "number",
+//   type: "number",
+//   id: "num",
+//   placeholder: "write a random number",
+//   validation: {
+//     required: {
+//       value: true,
+//       message: "required",
+//     },
+//   },
+// };
 
 export const email_validation = {
   name: "email",
   label: "email address",
-  select: false,
   type: "email",
   id: "email",
-  placeholder: "write your email address",
+  placeholder: "write a random email address",
   validation: {
     required: {
       value: true,
@@ -93,70 +123,6 @@ export const email_validation = {
       value:
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       message: "not valid",
-    },
-  },
-};
-
-export const issue_validate = {
-  name: "issue",
-  label: "Issue",
-  select: false,
-  type: "text",
-  id: "issue",
-  placeholder: "issue ...",
-  validation: {
-    required: {
-      value: true,
-      message: "required",
-    },
-  },
-};
-
-export const issueDetail_validate = {
-  name: "issueDetail",
-  label: "Issue Detail",
-  select: false,
-  multiline: true,
-  type: "text",
-  id: "issue detail",
-  placeholder: "Issue detail",
-  validation: {
-    required: {
-      value: true,
-      message: "required",
-    },
-  },
-};
-
-export const role = {
-  name: "role",
-  label: "Role",
-
-  type: "select",
-  id: "role",
-  placeholder: "role",
-  select: true,
-  option: ["sport", "library", "cafe", "faculty", "advisor", "registrar"],
-  validation: {
-    required: {
-      value: true,
-      message: "required",
-    },
-  },
-};
-export const field = {
-  name: "field",
-  label: "Field",
-
-  type: "select",
-  id: "fieeld",
-  placeholder: "field",
-  select: true,
-  option: ["Software Engineering", "IT", "Computer Science"],
-  validation: {
-    required: {
-      value: true,
-      message: "required",
     },
   },
 };

@@ -3,15 +3,11 @@ import TableLoader from "./TableLoader";
 import { useState } from "react";
 import { useEffect } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-function StudentList() {
+function AdminStuffList() {
   const [loading, setloading] = useState(true);
   const [data, setdata] = useState(false);
-  const [reload, setreload] = useState("sd");
   useEffect(() => {
-    fetch("http://localhost:3000/api/clearance/1", {
+    fetch("http://localhost:3000/api/stuff", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,32 +23,10 @@ function StudentList() {
         setloading(false);
       })
       .catch((err) => console.log(err));
-  }, [reload]);
-
-  const removeStudent = (studid) => {
-    console.log(studid);
-    fetch(`http://localhost:3000/api/clearance/${studid}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((final) => {
-        setreload("df");
-        toast("Student remove from the list successfully");
-        console.log(final);
-      })
-      .catch((err) => console.log(err));
-  };
+  }, []);
 
   return (
     <>
-      {/* <button onClick={notify}>Notify!</button> */}
-
       {loading ? (
         <TableLoader />
       ) : (
@@ -88,7 +62,7 @@ function StudentList() {
                               scope="col"
                               className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 "
                             >
-                              Issue
+                              Role
                             </th>
 
                             <th scope="col" className="relative py-3.5 px-4">
@@ -97,32 +71,40 @@ function StudentList() {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200 ">
-                          {data[0]?.map((each) => (
+                          {data.map((each) => (
                             <tr>
                               <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                 <div className="inline-flex items-center gap-x-3">
                                   <div className="flex items-center gap-x-2">
                                     <h2 className="font-normal text-gray-800">
-                                      {each.studId.fullName}
+                                      {each.fullName}
                                     </h2>
                                   </div>
                                 </div>
                               </td>
                               <td className="px-12 py-4 text-sm font-normal text-gray-700 whitespace-nowrap">
-                                {each.studId.email}
+                                {each.email}
                               </td>
                               <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                                {each.issue}
+                                {each.role}
                               </td>
 
                               <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                <button
-                                  onClick={() => {
-                                    removeStudent(each._id);
-                                  }}
-                                  className="px-2 py-1 border rounded-sm font-semibold text-md"
-                                >
-                                  remove
+                                <button className="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg  ">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+                                    />
+                                  </svg>
                                 </button>
                               </td>
                             </tr>
@@ -158,7 +140,7 @@ function StudentList() {
                 </a>
 
                 <div className="items-center hidden md:flex gap-x-3">
-                  {[...Array(data[1].val + 10 / 10 - 1)].map((each, index) => (
+                  {[...Array(1)].map((each, index) => (
                     <a
                       href="#"
                       className="px-2 py-1 text-sm text-blue-500 rounded-md  bg-blue-100/60"
@@ -199,4 +181,4 @@ function StudentList() {
   );
 }
 
-export default StudentList;
+export default AdminStuffList;

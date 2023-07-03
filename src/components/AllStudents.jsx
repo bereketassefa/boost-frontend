@@ -2,16 +2,27 @@ import React from "react";
 import TableLoader from "./TableLoader";
 import { useState } from "react";
 import { useEffect } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
+import { Button } from "./ui/button";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import AddStudent from "./AddStudent";
 
-function StudentList() {
+function AllStudents() {
   const [loading, setloading] = useState(true);
   const [data, setdata] = useState(false);
-  const [reload, setreload] = useState("sd");
+
   useEffect(() => {
-    fetch("http://localhost:3000/api/clearance/1", {
+    fetch("http://localhost:3000/api/student", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,44 +38,22 @@ function StudentList() {
         setloading(false);
       })
       .catch((err) => console.log(err));
-  }, [reload]);
-
-  const removeStudent = (studid) => {
-    console.log(studid);
-    fetch(`http://localhost:3000/api/clearance/${studid}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((final) => {
-        setreload("df");
-        toast("Student remove from the list successfully");
-        console.log(final);
-      })
-      .catch((err) => console.log(err));
-  };
+  }, []);
 
   return (
     <>
-      {/* <button onClick={notify}>Notify!</button> */}
-
       {loading ? (
         <TableLoader />
       ) : (
         <>
-          {data[0].length === 0 ? (
+          {data.length === 0 ? (
             <p className="text-center">There is not student in the list</p>
           ) : (
             <>
               <div className="flex flex-col mt-6">
                 <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                    <div className="overflow-hidden border border-gray-200  md:rounded-lg">
+                    <div className="overflow-hidden border border-gray-200 md:rounded-lg">
                       <table className="min-w-full divide-y divide-gray-200 ">
                         <thead className="bg-gray-50 ">
                           <tr>
@@ -97,33 +86,66 @@ function StudentList() {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200 ">
-                          {data[0]?.map((each) => (
-                            <tr>
+                          {data?.map((each, index) => (
+                            <tr key={index}>
                               <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                                 <div className="inline-flex items-center gap-x-3">
                                   <div className="flex items-center gap-x-2">
                                     <h2 className="font-normal text-gray-800">
-                                      {each.studId.fullName}
+                                      {each.fullName}
                                     </h2>
                                   </div>
                                 </div>
                               </td>
                               <td className="px-12 py-4 text-sm font-normal text-gray-700 whitespace-nowrap">
-                                {each.studId.email}
+                                {each.email}
                               </td>
-                              <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
-                                {each.issue}
+                              <td className="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                {each.email}
                               </td>
 
                               <td className="px-4 py-4 text-sm whitespace-nowrap">
-                                <button
-                                  onClick={() => {
-                                    removeStudent(each._id);
-                                  }}
-                                  className="px-2 py-1 border rounded-sm font-semibold text-md"
-                                >
-                                  remove
-                                </button>
+                                <AlertDialog>
+                                  <AlertDialogTrigger>
+                                    <Button variant="outline">Add</Button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>
+                                        Add {each.fullName} to the system
+                                      </AlertDialogTitle>
+                                      <AddStudent email={each.email}>
+                                        <AlertDialogCancel>
+                                          Cancel
+                                        </AlertDialogCancel>
+                                      </AddStudent>
+                                      {/* <AlertDialogDescription>
+                                        This action cannot be undone. This will
+                                        permanently delete your account and
+                                        remove your data from our servers.
+                                      </AlertDialogDescription> */}
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      {/* <AlertDialogCancel>
+                                        Cancel
+                                      </AlertDialogCancel> */}
+                                      {/* <AlertDialogAction>
+                                        <button
+                                          onClick={() => {
+                                            console.log("message");
+                                            toast({
+                                              title: "Scheduled: Catch up",
+                                              description:
+                                                "Friday, February 10, 2023 at 5:57 PM",
+                                            });
+                                          }}
+                                        >
+                                          continue
+                                        </button>
+                                      </AlertDialogAction> */}
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
                               </td>
                             </tr>
                           ))}
@@ -137,7 +159,7 @@ function StudentList() {
               <div className="flex items-center justify-between mt-6">
                 <a
                   href="#"
-                  className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2  "
+                  className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 "
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -157,23 +179,23 @@ function StudentList() {
                   <span>previous</span>
                 </a>
 
-                <div className="items-center hidden md:flex gap-x-3">
+                {/* <div className="items-center hidden md:flex gap-x-3">
                   {[...Array(data[1].val + 10 / 10 - 1)].map((each, index) => (
                     <a
                       href="#"
-                      className="px-2 py-1 text-sm text-blue-500 rounded-md  bg-blue-100/60"
+                      className="px-2 py-1 text-sm text-blue-500 rounded-md bg-blue-100/60"
                       key={index}
                     >
                       {index + 1}
                     </a>
                   ))}
-                </div>
+                </div> */}
 
                 <a
                   href="#"
-                  className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2     "
+                  className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 "
                 >
-                  <span>Next {data[1].length}</span>
+                  <span>Next {data.length}</span>
 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -199,4 +221,4 @@ function StudentList() {
   );
 }
 
-export default StudentList;
+export default AllStudents;

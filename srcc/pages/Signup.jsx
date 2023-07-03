@@ -1,82 +1,36 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate, useRoutes } from "react-router-dom";
+import { Input } from "../components/Input";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   email_validation,
+  lastname_validation,
+  name_validation,
+  password_confirm,
   password_validation,
 } from "../utils/inputValidations";
-import { FormProvider, useForm } from "react-hook-form";
-import { Input } from "../components/Input";
+import { useState } from "react";
+import { DevTool } from "@hookform/devtools";
 
-function Login() {
-  const [error, setError] = useState("");
-  const [loading, setloading] = useState(false);
+function Signup() {
   const methods = useForm();
+  const [success, setSuccess] = useState(false);
+  const control = methods.control;
   const route = useNavigate();
 
   const onSubmit = methods.handleSubmit((data) => {
-    setloading(true);
-    fetch("http://localhost:3000/api/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
-    })
-      .then((data) => {
-        setloading(false);
-
-        const contentType = data.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-          return data.json();
-        } else {
-          return data.text();
-        }
-      })
-      .then((final) => {
-        if (final.role) {
-          localStorage.setItem("id", final._id);
-          localStorage.setItem("role", final.role);
-          localStorage.setItem("token", final.token);
-          if (final.role === "student") {
-            methods.reset();
-            route("student");
-          } else if (final.role === "advisor") {
-            methods.reset();
-            route("advisor");
-          } else if (final.role === "registrar") {
-            methods.reset();
-            route("registrar");
-          } else if (
-            final.role === "library" ||
-            final.role === "stuff" ||
-            final.role === "sport" ||
-            final.role === "cafe"
-          ) {
-            methods.reset();
-            route("stuff/studentlist");
-          } else if (final.role === "admin") {
-            methods.reset();
-            route("admin/studentlist");
-          }
-        } else {
-          setError(final);
-          console.log(error);
-        }
-      })
-      .catch((err) => console.log(err));
-
     console.log(data);
-    // route("student");
+    methods.reset();
+    route("/student");
   });
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <section className="relative flex items-end h-32 bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+        <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt="Night"
             src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-            className="absolute inset-0 object-cover w-full h-full opacity-80"
+            className="absolute inset-0 h-full w-full object-cover opacity-80"
           />
 
           <div className="hidden lg:relative lg:block lg:p-12">
@@ -111,9 +65,9 @@ function Login() {
           className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
         >
           <div className="max-w-xl lg:max-w-3xl">
-            <div className="relative block -mt-16 lg:hidden">
+            <div className="relative -mt-16 block lg:hidden">
               <a
-                className="inline-flex items-center justify-center w-16 h-16 text-blue-600 bg-white rounded-full sm:h-20 sm:w-20"
+                className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 sm:h-20 sm:w-20"
                 href="/"
               >
                 <span className="sr-only">Home</span>
@@ -141,70 +95,51 @@ function Login() {
             </div>
             <FormProvider {...methods}>
               <form
+                onSubmit={(e) => e.preventDefault()}
+                noValidate
+                autoComplete="off"
                 action="#"
                 className="mt-8 grid grid-cols-6 gap-6 md:w-[500px]"
               >
+                <div className="col-span-6 sm:col-span-3">
+                  <Input {...name_validation} {...methods.register("name")} />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <Input {...lastname_validation} />
+                </div>
+
                 <div className="col-span-6">
                   <Input {...email_validation} />
                 </div>
 
-                <div className="col-span-6 ">
+                <div className="col-span-6 sm:col-span-3">
                   <Input {...password_validation} />
                 </div>
 
-                {/* <div className="col-span-6">
-                <p className="text-sm text-gray-500">
-                  By creating an account, you agree to our
-                  <a href="#" className="text-gray-700 underline">
-                    terms and conditions
-                  </a>
-                  and
-                  <a href="#" className="text-gray-700 underline">
-                    privacy policy
-                  </a>
-                  .
-                </p>
-              </div> */}
-                <p className="col-span-6 ">{error}</p>
+                <div className="col-span-6 sm:col-span-3">
+                  <Input {...password_confirm} />
+                </div>
+
                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
                   <button
                     onClick={onSubmit}
-                    className="flex px-12 py-3 text-sm font-medium text-white transition bg-blue-600 border border-blue-600 rounded-md shrink-0 hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                    className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
                   >
-                    {loading && (
-                      <svg
-                        aria-hidden="true"
-                        class="w-5 h-5 mr-2 text-white animate-spin dark:text-white fill-blue-600"
-                        viewBox="0 0 100 101"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                          fill="currentColor"
-                        />
-                        <path
-                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                          fill="currentFill"
-                        />
-                      </svg>
-                    )}
-                    Login
+                    Create an account
                   </button>
 
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                    Don't have an account
-                    <Link
-                      to="signup"
-                      className="pl-3 text-indigo-600 underline "
-                    >
-                      Signup
+                    Already have an account?
+                    <Link to="/" className=" underline text-indigo-600 pl-3">
+                      Log in
                     </Link>
                     .
                   </p>
                 </div>
               </form>
             </FormProvider>
+            <DevTool control={control} />
           </div>
         </main>
       </div>
@@ -212,4 +147,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

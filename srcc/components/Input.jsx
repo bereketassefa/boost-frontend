@@ -5,8 +5,7 @@
 |
 |  🐸 Returns:  JSX
 *-------------------------------------------------------------------*/
-import React from "react";
-import ReactDOM from "react-dom";
+
 import cn from "classnames";
 import { findInputError, isFormInvalid } from "../utils";
 import { useFormContext } from "react-hook-form";
@@ -21,10 +20,6 @@ export const Input = ({
   validation,
   multiline,
   className,
-  select,
-  option,
-  val,
-  disable,
 }) => {
   const {
     register,
@@ -35,15 +30,12 @@ export const Input = ({
   const isInvalid = isFormInvalid(inputErrors);
 
   const input_tailwind =
-    "p-4 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60";
+    "p-5 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60";
 
   return (
-    <div className={cn("flex flex-col w-full gap-2")}>
+    <div className={cn("flex flex-col w-full gap-2", className)}>
       <div className="flex justify-between">
-        <label
-          htmlFor={id}
-          className={cn("font-semibold capitalize", "py-1 text-[16px]")}
-        >
+        <label htmlFor={id} className="font-semibold capitalize">
           {label}
         </label>
         <AnimatePresence mode="wait" initial={false}>
@@ -55,53 +47,22 @@ export const Input = ({
           )}
         </AnimatePresence>
       </div>
-      {multiline && !select ? (
+      {multiline ? (
         <textarea
           id={id}
           type={type}
-          className={cn(input_tailwind, className)}
+          className={cn(input_tailwind, "min-h-[10rem] max-h-[20rem] resize-y")}
           placeholder={placeholder}
           {...register(name, validation)}
         ></textarea>
       ) : (
-        !select && (
-          <input
-            id={id}
-            type={type}
-            value={val}
-            className={cn(input_tailwind, className)}
-            placeholder={placeholder}
-            {...register(name, validation)}
-          />
-        )
-      )}
-      {select ? (
-        <select
+        <input
           id={id}
-          name="pets"
+          type={type}
+          className={cn(input_tailwind)}
+          placeholder={placeholder}
           {...register(name, validation)}
-          className={cn("flex flex-col w-full gap-2", className)}
-        >
-          <option value="" disabled selected>
-            Select your option
-          </option>
-          {option ? (
-            option.map((each) => <option value={each}>{each}</option>)
-          ) : (
-            <>
-              <option value="IT">IT</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Software Engineering">Software Engineering</option>
-              <option value="Electrical Engineering">
-                Electrical Engineering
-              </option>
-              <option value="spider">Spider</option>
-              <option value="goldfish">Goldfish</option>
-            </>
-          )}
-        </select>
-      ) : (
-        ""
+        />
       )}
     </div>
   );

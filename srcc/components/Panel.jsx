@@ -7,29 +7,26 @@ function Panel({ type }) {
     <div className="w-full bg-gray-100">
       <nav
         aria-label="Site Nav"
-        className="flex items-center max-w-5xl pl-3 mx-auto space-x-2"
+        className="mx-auto flex max-w-5xl items-center space-x-2  pl-3"
       >
         {type === "stuff" ? (
           <>
-            <NavLink to="studentlist" className="px-5 py-4 ">
+            <NavLink to="studentlist" className="py-4 px-5 ">
               Student List
             </NavLink>
-            <NavLink to="allstudents" className="px-5 py-4 ">
-              All Student
-            </NavLink>
-            <NavLink to="addStudent" className="px-5 py-4">
+            <NavLink to="addStudent" className="py-4 px-5">
               Add Student
             </NavLink>
           </>
         ) : (
           <>
-            <NavLink exact to="studentlist" className="px-5 py-4 ">
+            <NavLink exact to="studentlist" className="py-4 px-5 ">
               Student List
             </NavLink>
-            <NavLink to="stufflist" className="px-5 py-4 ">
+            <NavLink to="stufflist" className="py-4 px-5 ">
               Stuff List
             </NavLink>
-            <NavLink to="addstuff" className="px-5 py-4">
+            <NavLink to="addstuff" className="py-4 px-5">
               Add Stuff
             </NavLink>
           </>

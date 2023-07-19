@@ -173,7 +173,7 @@ function StudentList() {
                   href="#"
                   className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2     "
                 >
-                  <span>Next {data[1].length}</span>
+                  <span>Next </span>
 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

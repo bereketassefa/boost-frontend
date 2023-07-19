@@ -14,6 +14,7 @@ import AllStudents from "./components/AllStudents";
 import { ToastContainer } from "react-toastify";
 import Advisor from "./pages/Advisor";
 import Registrar from "./pages/Registrat";
+import StudentProfile from "./pages/StudentProfile";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/Student" element={<Student />}></Route>
         <Route path="/advisor" element={<Advisor />}></Route>
         <Route path="/registrar" element={<Registrar />}></Route>
+        <Route path="/profile/:id" element={<StudentProfile />}></Route>
         <Route path="/Stuff" element={<Stuff />}>
           <Route index element={<StudentList />}></Route>
           <Route path="Studentlist" element={<StudentList />}></Route>

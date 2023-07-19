@@ -117,6 +117,15 @@ function RegistratList() {
                                   validate
                                 </button>
                               </td>
+                              <td className="px-4 py-4 text-sm whitespace-nowrap">
+                                <a
+                                  target="_blank"
+                                  href={`profile/${each._id}`}
+                                  className="px-2 py-1 border rounded-sm font-semibold text-md"
+                                >
+                                  print
+                                </a>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -165,8 +174,6 @@ function RegistratList() {
                   href="#"
                   className="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2     "
                 >
-                  {/* <span>Next {data[1].length}</span> */}
-
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
